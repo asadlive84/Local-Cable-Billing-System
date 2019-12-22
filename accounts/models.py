@@ -42,7 +42,6 @@ class AccountPackage(models.Model):
     active_date = models.DateField("Opening Date")
     closed_date = models.DateField("Closed Date", null=True, blank=True)
     total_days = models.PositiveIntegerField(default=0, blank=True)
-    balance = models.FloatField("Total Balance", blank=True, default=0)
     due = models.FloatField("Total Due", blank=True, default=0)
     ac_status = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
@@ -53,6 +52,9 @@ class AccountPackage(models.Model):
 
     def save(self, *args, **kwargs):
         self.total_days = round((timezone.now().date() - self.active_date).days, 1)
+        if self.closed_date:
+            self.total_days = round((self.closed_date - self.active_date).days, 1)
+            self.ac_status = False
         self.due = self.package.per_day_amount * self.total_days
 
         return super(AccountPackage, self).save(*args, **kwargs)
