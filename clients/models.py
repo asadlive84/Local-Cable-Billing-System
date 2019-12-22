@@ -61,8 +61,8 @@ class Client(models.Model):
         default=create_client_id,
         blank=True,
     )
-    name = models.CharField("Name", max_length=200)
-    mobile_number = models.PositiveIntegerField("Mobile Number", unique=True)
+    name = models.CharField("Name", max_length=200, db_index=True)
+    mobile_number = models.PositiveIntegerField("Mobile Number", unique=True, db_index=True)
     others_number = models.PositiveIntegerField("Other's Number", blank=True, null=True)
     gender = models.CharField("Gender", choices=GENDER, default=MALE, max_length=10)
     address = models.TextField(null=True, blank=True)
@@ -72,3 +72,6 @@ class Client(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.mobile_number}"
+
+    class Meta:
+        ordering = ['-created_time', ]

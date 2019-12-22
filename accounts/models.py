@@ -5,6 +5,9 @@ from clients.models import Client
 
 
 class Package(models.Model):
+    """
+    It is design for package.
+    """
     package_name = models.CharField('Package', max_length=100, default='')
     package_bill = models.FloatField('Per Month Amount', default=0)
     month_cycle = models.IntegerField('Month Cycle', default=30)
@@ -25,6 +28,9 @@ class Package(models.Model):
 
 
 class Account(models.Model):
+    """
+    Customer Account
+    """
     client = models.OneToOneField(Client, on_delete=models.CASCADE)
     total_balance = models.FloatField("Total Balance", blank=True, default=0)
     total_due = models.FloatField("Total Due", blank=True, default=0)
@@ -37,6 +43,9 @@ class Account(models.Model):
 
 
 class AccountPackage(models.Model):
+    """
+    Customer Account Package
+    """
     account_holder = models.ForeignKey(Account, on_delete=models.CASCADE)
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
     active_date = models.DateField("Opening Date")
